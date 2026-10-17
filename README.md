@@ -1,4 +1,4 @@
-# Inventory & Sales Management System
+# Mini Market - Inventory & Sales Management System
 
 Aplikasi web terintegrasi untuk UTS Web Programming 2 (Laravel 10, MySQL, Eloquent ORM).
 Mengelola master data (kategori, produk, supplier), transaksi pembelian (stock-in) dan penjualan,
@@ -43,6 +43,7 @@ Buka http://127.0.0.1:8000
 |-------|-------------------|----------|
 | Admin | admin@example.com | password |
 | Staff | staff@example.com | password |
+| Pembeli | pembeli@example.com | password |
 
 Akun ini hanya untuk demo (data dummy).
 
@@ -143,3 +144,11 @@ Letakkan di folder `docs/screenshots`: login, dashboard, daftar produk, form pen
 - Manajemen pengguna hanya menampilkan daftar (akun dibuat lewat seeder)
 - Transaksi yang sudah selesai tidak dapat diedit, hanya dibatalkan
 - Belum ada laporan ekspor (PDF/Excel) dan payment gateway
+
+
+## Alur pesanan (pembeli, staff, admin)
+- Pembeli: pilih produk, masukkan ke keranjang, lalu Checkout. Pesanan berstatus "Menunggu" dan stok belum berubah.
+- Staff: menerima atau menolak pesanan. Saat diterima, dalam satu `DB::transaction` dibuat transaksi penjualan dan stok dikurangi (ditolak jika stok tidak cukup).
+- Admin: hanya melihat data pesanan dan penjualan (read-only), serta mengelola data master dan pengguna.
+- Harga dan total selalu dihitung server dari database.
+

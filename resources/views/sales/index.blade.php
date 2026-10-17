@@ -2,7 +2,11 @@
 @section('title', 'Penjualan')
 @section('content')
 <h1>Penjualan</h1>
+@if(auth()->user()->role === 'staff')
 <p><a class="btn" href="{{ route('sales.create') }}">+ Penjualan Baru</a></p>
+@else
+<p class="muted">Admin hanya dapat melihat data penjualan.</p>
+@endif
 <form method="GET" action="{{ route('sales.index') }}" class="filters">
     <input name="q" value="{{ request('q') }}" placeholder="No. transaksi">
     <select name="status">
@@ -32,3 +36,4 @@
 </table>
 {{ $sales->links() }}
 @endsection
+

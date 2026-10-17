@@ -14,7 +14,7 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+            return redirect()->route(auth()->user()->isBuyer() ? 'products.index' : 'dashboard');
         }
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
@@ -27,3 +27,4 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
+

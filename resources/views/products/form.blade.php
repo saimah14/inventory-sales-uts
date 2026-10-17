@@ -3,7 +3,7 @@
 @section('content')
 <h1>{{ $product->exists ? 'Ubah' : 'Tambah' }} Produk</h1>
 @include('partials.errors')
-<form method="POST" action="{{ $product->exists ? route('products.update', $product) : route('products.store') }}">
+<form method="POST" enctype="multipart/form-data" action="{{ $product->exists ? route('products.update', $product) : route('products.store') }}">
     @csrf
     @if($product->exists)
         @method('PUT')
@@ -17,6 +17,11 @@
                 <option value="{{ $c->id }}" @selected(old('category_id', $product->category_id) == $c->id)>{{ $c->name }}</option>
             @endforeach
         </select></label></p>
+    <p><label>Foto produk (opsional, JPG/PNG/WEBP, maks 2 MB)<br>
+        <input type="file" name="image" accept="image/png,image/jpeg,image/webp"></label></p>
+    @if($product->image)
+        <p><img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="max-width:160px;border-radius:10px"></p>
+    @endif
     <p><label>Harga beli<br><input type="number" step="0.01" min="0" name="purchase_price" value="{{ old('purchase_price', $product->purchase_price) }}" required></label></p>
     <p><label>Harga jual<br><input type="number" step="0.01" min="0" name="selling_price" value="{{ old('selling_price', $product->selling_price) }}" required></label></p>
     @if($product->exists)

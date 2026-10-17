@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Produk')
 @section('content')
-<h1>Produk</h1>
-@if(auth()->user()->isAdmin())
-    <p><a class="btn" href="{{ route('products.create') }}">+ Tambah Produk</a></p>
-@endif
+@php $icons = ['Makanan' => '&#127836;', 'Minuman' => '&#129380;', 'Peralatan Rumah' => '&#129533;']; @endphp
+<div class="page-head">
+    <h1>{{ auth()->user()->isBuyer() ? 'Katalog Produk' : 'Produk' }}</h1>
+    @if(auth()->user()->isAdmin())
+        <a class="btn" href="{{ route('products.create') }}">+ Tambah Produk</a>
+    @endif
+</div>
 <form method="GET" action="{{ route('products.index') }}" class="filters">
     <input name="q" value="{{ request('q') }}" placeholder="Cari SKU / nama">
     <select name="category_id">
@@ -17,35 +20,52 @@
     <button class="btn">Cari</button>
     <a href="{{ route('products.index') }}">Reset</a>
 </form>
-<table>
-    <tr><th>SKU</th><th>Nama</th><th>Kategori</th><th>Harga Jual</th><th>Stok</th><th>Aksi</th></tr>
+<div class="product-grid">
     @forelse($products as $p)
-        <tr>
-            <td>{{ $p->sku }}</td>
-            <td>{{ $p->name }}</td>
-            <td>{{ $p->category->name }}</td>
-            <td>Rp {{ number_format($p->selling_price, 0, ',', '.') }}</td>
-            <td>
-                {{ $p->stock }}
-                @if($p->stock <= $p->minimum_stock)
-                    <span class="badge">Stok rendah</span>
+        <div class="product-card">
+            <div class="thumb">
+                @if($p->image)
+                    <img src="{{ asset($p->image) }}" alt="{{ $p->name }}">
+                @else
+                    <span class="emoji">{!! $icons[$p->category->name] ?? '&#128230;' !!}</span>
                 @endif
-            </td>
-            <td>
-                <a href="{{ route('products.show', $p) }}">Detail</a>
-                @if(auth()->user()->isAdmin())
-                    <a href="{{ route('products.edit', $p) }}">Ubah</a>
-                    <form method="POST" action="{{ route('products.destroy', $p) }}" style="display:inline" onsubmit="return confirm('Hapus produk ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button class="link-danger">Hapus</button>
-                    </form>
-                @endif
-            </td>
-        </tr>
+            </div>
+            <div class="body">
+                <div class="cat">{{ $p->category->name }}</div>
+                <h3>{{ $p->name }}</h3>
+                <div class="sku">{{ $p->sku }}</div>
+                <div class="price">Rp {{ number_format($p->selling_price, 0, ',', '.') }}</div>
+                <div>
+                    Stok: <strong>{{ $p->stock }}</strong>
+                    @if($p->stock <= $p->minimum_stock)
+                        <span class="badge">Stok rendah</span>
+                    @endif
+                </div>
+                <div class="actions">
+                    <a href="{{ route('products.show', $p) }}">Detail</a>
+                    @if(auth()->user()->isBuyer() && $p->stock > 0)
+                        <form method="POST" action="{{ route('cart.add') }}" style="display:inline">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $p->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button class="btn" style="padding:5px 10px">+ Keranjang</button>
+                        </form>
+                    @endif
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('products.edit', $p) }}">Ubah</a>
+                        <form method="POST" action="{{ route('products.destroy', $p) }}" style="display:inline" onsubmit="return confirm('Hapus produk ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="link-danger">Hapus</button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
     @empty
-        <tr><td colspan="6">Tidak ada produk.</td></tr>
+        <p>Tidak ada produk.</p>
     @endforelse
-</table>
+</div>
 {{ $products->links() }}
 @endsection
+

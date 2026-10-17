@@ -11,6 +11,9 @@ class User extends Authenticatable
     protected $hidden = ['password', 'remember_token'];
     protected $casts = ['email_verified_at' => 'datetime'];
     public function isAdmin(): bool { return $this->role === 'admin'; }
+    public function isBuyer(): bool { return $this->role === 'pembeli'; }
     public function sales() { return $this->hasMany(Sale::class); }
     public function purchases() { return $this->hasMany(Purchase::class); }
+    public function orders() { return $this->hasMany(Order::class); }
+    public function processedOrders() { return $this->hasMany(Order::class, 'processed_by'); }
 }

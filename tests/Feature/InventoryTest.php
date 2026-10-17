@@ -139,7 +139,7 @@ class InventoryTest extends TestCase
         $admin = $this->admin();
         $product = $this->makeProduct(['stock' => 10]);
 
-        $this->actingAs($admin)->post('/sales', [
+        $this->actingAs($this->staff())->post('/sales', [
             'items' => [['product_id' => $product->id, 'quantity' => 4]],
         ]);
         $this->assertEquals(6, $product->fresh()->stock);
@@ -193,3 +193,4 @@ class InventoryTest extends TestCase
             ->assertDontSee('Produk 01');
     }
 }
+

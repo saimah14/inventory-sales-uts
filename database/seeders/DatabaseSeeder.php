@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     {
         User::create(['name' => 'Admin Owner', 'email' => 'admin@example.com', 'password' => Hash::make('password'), 'role' => 'admin']);
         User::create(['name' => 'Staff Demo', 'email' => 'staff@example.com', 'password' => Hash::make('password'), 'role' => 'staff']);
+        User::create(['name' => 'Pembeli Demo', 'email' => 'pembeli@example.com', 'password' => Hash::make('password'), 'role' => 'pembeli']);
 
         $makanan = Category::create(['name' => 'Makanan']);
         $minuman = Category::create(['name' => 'Minuman']);
@@ -27,3 +28,4 @@ class DatabaseSeeder extends Seeder
         Product::create(['category_id' => $rumah->id, 'sku' => 'RMH-001', 'name' => 'Sabun Cuci Piring', 'purchase_price' => 9000, 'selling_price' => 12500, 'stock' => 30, 'minimum_stock' => 8]);
     }
 }
+

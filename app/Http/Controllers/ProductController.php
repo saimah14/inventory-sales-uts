@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -43,7 +44,15 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        Product::create($request->validate($this->rules()));
+        $data = $request->validate($this->rules());
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->saveImage($request->file('image'));
+        } else {
+            unset($data['image']);
+        }
+
+        Product::create($data);
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
@@ -57,7 +66,16 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $product->update($request->validate($this->rules($product)));
+        $data = $request->validate($this->rules($product));
+
+        if ($request->hasFile('image')) {
+            $this->deleteImage($product->image);
+            $data['image'] = $this->saveImage($request->file('image'));
+        } else {
+            unset($data['image']);
+        }
+
+        $product->update($data);
         return redirect()->route('products.index')->with('success', 'Produk berhasil diubah.');
     }
 
@@ -79,10 +97,25 @@ class ProductController extends Controller
             'purchase_price' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
             'minimum_stock' => ['required', 'integer', 'min:0'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
         if (!$product) {
             $rules['stock'] = ['required', 'integer', 'min:0'];
         }
         return $rules;
+    }
+
+    private function saveImage($file): string
+    {
+        $name = Str::random(20) . '.' . $file->extension();
+        $file->move(public_path('uploads/products'), $name);
+        return 'uploads/products/' . $name;
+    }
+
+    private function deleteImage(?string $path): void
+    {
+        if ($path && file_exists(public_path($path))) {
+            @unlink(public_path($path));
+        }
     }
 }
