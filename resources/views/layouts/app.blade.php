@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Mini Market') - Mini Market</title>
+    <title>@yield('title', config('app.name')) - {{ config('app.name') }}</title>
     <style>
         :root { --primary:#4f46e5; --primary-dark:#3730a3; --dark:#1e1b4b; --bg:#f4f5fb; --text:#1f2937; --muted:#6b7280; --line:#e5e7eb; }
         * { box-sizing: border-box; }
@@ -97,7 +97,7 @@
     </nav>
     @else
     <nav>
-        <span class="brand">&#128230; Mini Market</span>
+        <span class="brand">&#128230; saimah mart</span>
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
         <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') && !request('low') ? 'active' : '' }}">Produk</a>
         <a href="{{ route('products.index', ['low' => 1]) }}" class="{{ request()->routeIs('products.index') && request('low') ? 'active' : '' }}">Stok Rendah</a>

@@ -51,12 +51,12 @@
             <circle cx="280" cy="110" r="20" fill="#ffffff"/>
             <circle cx="320" cy="110" r="20" fill="#ef4444"/>
             <rect x="88" y="22" width="224" height="38" rx="10" fill="#1e1b4b"/>
-            <text x="200" y="48" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#ffffff" letter-spacing="2">MINI MARKET</text>
+            <text x="200" y="48" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#ffffff" letter-spacing="2">saimah mart</text>
             <circle cx="345" cy="236" r="9" fill="#ef4444"/>
             <rect x="343" y="222" width="4" height="8" fill="#16a34a"/>
             <circle cx="58" cy="240" r="9" fill="#f59e0b"/>
         </svg>
-        <h2>Mini Market</h2>
+        <h2>saimah mart</h2>
         <p>Belanja kebutuhan harian jadi lebih mudah</p>
         <ul>
             <li>&#128722; Pilih produk, masuk keranjang</li>
@@ -65,7 +65,7 @@
         </ul>
     </div>
     <div class="auth-right">
-        <h1>Selamat datang</h1>
+        <h1>Selamat berbelanja</h1>
         <p class="sub">Silakan login untuk melanjutkan</p>
         @if($errors->any())
             <div class="alert">{{ $errors->first() }}</div>
