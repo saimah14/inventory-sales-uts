@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     // Admin dan Staff
     Route::middleware(StaffOnly::class)->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/stok-ringkasan', [ProductController::class, 'summary'])->name('products.summary');
         Route::resource('sales', SaleController::class)->only(['index', 'show']);
         Route::resource('purchases', PurchaseController::class)->only(['index', 'create', 'store', 'show']);
     });

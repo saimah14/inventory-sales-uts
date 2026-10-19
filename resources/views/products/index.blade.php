@@ -8,6 +8,7 @@
         <a class="btn" href="{{ route('products.create') }}">+ Tambah Produk</a>
     @endif
 </div>
+@include('partials.errors')
 <form method="GET" action="{{ route('products.index') }}" class="filters">
     <input name="q" value="{{ request('q') }}" placeholder="Cari SKU / nama">
     <select name="category_id">
@@ -68,4 +69,5 @@
 </div>
 {{ $products->links() }}
 @endsection
+
 

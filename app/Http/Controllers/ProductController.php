@@ -87,7 +87,14 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
     }
+public function summary()
+    {
+        $products = Product::with('category')->orderBy('stock')->get();
+        $totalStock = $products->sum('stock');
+        $totalValue = $products->sum(fn ($p) => $p->stock * $p->purchase_price);
 
+        return view('products.summary', compact('products', 'totalStock', 'totalValue'));
+    }
     private function rules(?Product $product = null): array
     {
         $rules = [
