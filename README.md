@@ -62,8 +62,8 @@ Buka `http://127.0.0.1:8000`
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | admin@example.com | admin123 |
-| Staff | staff@example.com | staff123 |
+| Admin | admin@example.com | 123456789 |
+| Staff | staff@example.com | 123456789 |
 | Pembeli | saimah@gmail.com | 123456789 |
 
 ## ERD
